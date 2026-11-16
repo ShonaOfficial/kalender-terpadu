@@ -20,7 +20,24 @@ function getNongli(date) {
   try {
     const nl = solarLunar.solar2lunar(date.getFullYear(), date.getMonth() + 1, date.getDate());
     if (!nl || nl === -1) return null;
-    return { hari: nl.lDay, bulan: nl.lMonth, tahun: nl.lYear, namaBulan: nl.IMonthCn, namaHari: nl.IDayCn, ganzhi: nl.gzYear, zodiac: nl.animal, string: `${nl.gzYear}年 ${nl.IMonthCn}${nl.IDayCn} - Shio ${nl.animal}` };
+
+    // Perbaikan manual karena library mengembalikan undefined di Termux
+    const monthCnArr = ['正','二','三','四','五','六','七','八','九','十','冬','腊'];
+    const dayCnArr = ['初一','初二','初三','初四','初五','初六','初七','初八','初九','初十','十一','十二','十三','十四','十五','十六','十七','十八','十九','二十','廿一','廿二','廿三','廿四','廿五','廿六','廿七','廿八','廿九','三十'];
+    
+    const namaBulan = (nl.isLeap ? '闰' : '') + monthCnArr[nl.lMonth - 1] + '月';
+    const namaHari = dayCnArr[nl.lDay - 1];
+
+    return { 
+      hari: nl.lDay, 
+      bulan: nl.lMonth, 
+      tahun: nl.lYear, 
+      namaBulan: namaBulan, 
+      namaHari: namaHari, 
+      ganzhi: nl.gzYear, 
+      zodiac: nl.animal, 
+      string: `${nl.lYear + 551}年 (${nl.gzYear}) ${namaBulan}${namaHari} - Shio ${nl.animal}` 
+    };
   } catch (e) { return null; }
 }
 
