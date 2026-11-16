@@ -19,7 +19,6 @@
   </style>
 </head>
 <body>
-
   <div class="card">
     <h2>🗓️ Kalender Terpadu</h2>
     <div class="input-group">
@@ -30,20 +29,14 @@
     </div>
   </div>
 
-  <!-- 1. Panggil Library Solarlunar dari CDN -->
   <script src="https://cdn.jsdelivr.net/npm/solarlunar@2.0.7/solarlunar.min.js"></script>
-  
-  <!-- 2. Panggil kode web.js dari GitHub Repository Anda via raw.githack -->
-  <!-- Ganti ShonaOfficial dengan username GitHub Anda jika berbeda -->
-  <script src="https://raw.githack.com/ShonaOfficial/kalender-terpadu/main/src/web.js"></script>
+  <script src="src/web.js"></script>
 
-  <!-- 3. Script untuk mengontrol UI -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const datePicker = document.getElementById('datePicker');
       const hasilDiv = document.getElementById('hasil');
       
-      // Set tanggal hari ini ke input
       const today = new Date();
       const yyyy = today.getFullYear();
       const mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -53,35 +46,24 @@
       function renderKalender(dateStr) {
         if(!dateStr) return;
         const date = new Date(dateStr);
+        
+        if (typeof getKalenderLengkap !== 'function') {
+           hasilDiv.innerHTML = '<div class="loading" style="color:#ef4444">Gagal memuat src/web.js.</div>';
+           return;
+        }
+
         const data = getKalenderLengkap(date);
 
         hasilDiv.innerHTML = `
-          <div class="result-item">
-            <div class="label">Masehi</div>
-            <div class="value">${data.masehi.string}</div>
-          </div>
-          <div class="result-item">
-            <div class="label">Nongli (Kongzili)</div>
-            <div class="value">${data.nongli ? data.nongli.string : '-'}</div>
-          </div>
-          <div class="result-item">
-            <div class="label">Hijriah</div>
-            <div class="value">${data.hijriah ? data.hijriah.string : '-'}</div>
-          </div>
-          <div class="result-item">
-            <div class="label">Jawa</div>
-            <div class="value">${data.jawa ? data.jawa.string : '-'}</div>
-          </div>
+          <div class="result-item"><div class="label">Masehi</div><div class="value">${data.masehi.string}</div></div>
+          <div class="result-item"><div class="label">Nongli (Kongzili)</div><div class="value">${data.nongli ? data.nongli.string : '-'}</div></div>
+          <div class="result-item"><div class="label">Hijriah</div><div class="value">${data.hijriah ? data.hijriah.string : '-'}</div></div>
+          <div class="result-item"><div class="label">Jawa</div><div class="value">${data.jawa ? data.jawa.string : '-'}</div></div>
         `;
       }
 
-      // Render pertama kali
       renderKalender(datePicker.value);
-
-      // Render ulang jika tanggal diubah
-      datePicker.addEventListener('change', (e) => {
-        renderKalender(e.target.value);
-      });
+      datePicker.addEventListener('change', (e) => renderKalender(e.target.value));
     });
   </script>
 </body>
