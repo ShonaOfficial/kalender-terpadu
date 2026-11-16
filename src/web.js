@@ -1,5 +1,3 @@
-cat > src/web.js << 'EOF'
-// Fungsi Kalender Terpadu untuk Browser
 const JAWA_HARI = ['Ahad', 'Senin', 'Selasa', 'Rebo', 'Kemis', 'Jumat', 'Setu'];
 const JAWA_PASARAN = ['Legi', 'Pahing', 'Pon', 'Wage', 'Kliwon'];
 const JAWA_BULAN = ['Sura', 'Sapar', 'Mulud', 'Bakda Mulud', 'Jumadilawal', 'Jumadilakir', 'Rejeb', 'Ruwah', 'Pasa', 'Sawal', 'Sela', 'Besar'];
@@ -49,4 +47,3 @@ function getKalenderLengkap(date) {
 
   return { masehi, nongli, hijriah, jawa };
 }
-EOF
