@@ -1,0 +1,89 @@
+cat > index.html << 'EOF'
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalender Terpadu</title>
+  <style>
+    :root { --bg: #0f172a; --card: #1e293b; --text: #e2e8f0; --accent: #38bdf8; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: var(--text); display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px; box-sizing: border-box; }
+    .card { background: var(--card); padding: 2rem; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 100%; max-width: 400px; }
+    h2 { text-align: center; margin-top: 0; color: var(--accent); }
+    .input-group { margin-bottom: 20px; text-align: center; }
+    input[type="date"] { padding: 10px; border-radius: 8px; border: 1px solid #475569; background: #0f172a; color: white; font-size: 16px; width: 100%; box-sizing: border-box; }
+    .result-item { margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #334155; }
+    .result-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .label { font-size: 12px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+    .value { font-size: 16px; font-weight: 600; }
+    .loading { text-align: center; color: #94a3b8; font-style: italic; }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h2>🗓️ Kalender Terpadu</h2>
+    <div class="input-group">
+      <input type="date" id="datePicker">
+    </div>
+    <div id="hasil">
+      <div class="loading">Memuat data...</div>
+    </div>
+  </div>
+
+  <!-- 1. Panggil Library Solarlunar dari CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/solarlunar@2.0.7/solarlunar.min.js"></script>
+  
+  <!-- 2. Panggil kode web.js dari GitHub Repository Anda via raw.githack -->
+  <!-- Ganti ShonaOfficial dengan username GitHub Anda jika berbeda -->
+  <script src="https://raw.githack.com/ShonaOfficial/kalender-terpadu/main/src/web.js"></script>
+
+  <!-- 3. Script untuk mengontrol UI -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const datePicker = document.getElementById('datePicker');
+      const hasilDiv = document.getElementById('hasil');
+      
+      // Set tanggal hari ini ke input
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, '0');
+      const dd = String(today.getDate()).padStart(2, '0');
+      datePicker.value = `${yyyy}-${mm}-${dd}`;
+
+      function renderKalender(dateStr) {
+        if(!dateStr) return;
+        const date = new Date(dateStr);
+        const data = getKalenderLengkap(date);
+
+        hasilDiv.innerHTML = `
+          <div class="result-item">
+            <div class="label">Masehi</div>
+            <div class="value">${data.masehi.string}</div>
+          </div>
+          <div class="result-item">
+            <div class="label">Nongli (Kongzili)</div>
+            <div class="value">${data.nongli ? data.nongli.string : '-'}</div>
+          </div>
+          <div class="result-item">
+            <div class="label">Hijriah</div>
+            <div class="value">${data.hijriah ? data.hijriah.string : '-'}</div>
+          </div>
+          <div class="result-item">
+            <div class="label">Jawa</div>
+            <div class="value">${data.jawa ? data.jawa.string : '-'}</div>
+          </div>
+        `;
+      }
+
+      // Render pertama kali
+      renderKalender(datePicker.value);
+
+      // Render ulang jika tanggal diubah
+      datePicker.addEventListener('change', (e) => {
+        renderKalender(e.target.value);
+      });
+    });
+  </script>
+</body>
+</html>
