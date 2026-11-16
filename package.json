@@ -1,0 +1,11 @@
+{
+  "name": "kalender-terpadu",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node examples/node.js"
+  },
+  "dependencies": {
+    "solarlunar": "^2.0.7"
+  }
+}
