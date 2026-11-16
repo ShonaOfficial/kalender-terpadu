@@ -28,10 +28,9 @@
     </div>
   </div>
 
-  <!-- Memanggil file JS lokal -->
-  <script src="https://github.com/ShonaOfficial/kalender-terpadu/blob/main/src/web.js"></script>
+  <!-- INI DIA LINK JS LENGKAPNYA (Menggunakan domain GitHub Pages Anda) -->
+  <script src="https://cdn.jsdelivr.net/gh/ShonaOfficial/kalender-terpadu@V1.0.0/src/web.js"></script>
 
-  <!-- Logika UI -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const datePicker = document.getElementById('datePicker');
@@ -40,12 +39,13 @@
       const today = new Date();
       datePicker.value = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
 
-      function renderKalender(dateStr) {
+      function render(dateStr) {
         if(!dateStr) return;
         const date = new Date(dateStr);
         
+        // Cek apakah JS berhasil dimuat dari link
         if (typeof getKalenderLengkap !== 'function') {
-           hasilDiv.innerHTML = '<div style="text-align:center; color:#ef4444;">Gagal memuat src/web.js.</div>';
+           hasilDiv.innerHTML = '<div style="text-align:center; color:#ef4444;">Gagal memuat file JS dari link. Pastikan file src/web.js sudah ada di GitHub.</div>';
            return;
         }
 
@@ -59,8 +59,8 @@
         `;
       }
 
-      renderKalender(datePicker.value);
-      datePicker.addEventListener('change', (e) => renderKalender(e.target.value));
+      render(datePicker.value);
+      datePicker.addEventListener('change', (e) => render(e.target.value));
     });
   </script>
 </body>
