@@ -15,7 +15,6 @@
     .result-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
     .label { font-size: 12px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
     .value { font-size: 16px; font-weight: 600; }
-    .loading { text-align: center; color: #94a3b8; font-style: italic; }
   </style>
 </head>
 <body>
@@ -25,40 +24,38 @@
       <input type="date" id="datePicker">
     </div>
     <div id="hasil">
-      <div class="loading">Memuat data...</div>
+      <div style="text-align:center; color:#94a3b8;">Memuat data...</div>
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/solarlunar@2.0.7/solarlunar.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/ShonaOfficial/kalender-terpadu@main/src/web.js"></script>
+  <!-- Memanggil file JS lokal -->
+  <script src="src/web.js"></script>
 
+  <!-- Logika UI -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const datePicker = document.getElementById('datePicker');
       const hasilDiv = document.getElementById('hasil');
       
       const today = new Date();
-      const yyyy = today.getFullYear();
-      const mm = String(today.getMonth() + 1).padStart(2, '0');
-      const dd = String(today.getDate()).padStart(2, '0');
-      datePicker.value = `${yyyy}-${mm}-${dd}`;
+      datePicker.value = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
 
       function renderKalender(dateStr) {
         if(!dateStr) return;
         const date = new Date(dateStr);
         
         if (typeof getKalenderLengkap !== 'function') {
-           hasilDiv.innerHTML = '<div class="loading" style="color:#ef4444">Gagal memuat src/web.js.</div>';
+           hasilDiv.innerHTML = '<div style="text-align:center; color:#ef4444;">Gagal memuat src/web.js.</div>';
            return;
         }
 
         const data = getKalenderLengkap(date);
 
         hasilDiv.innerHTML = `
-          <div class="result-item"><div class="label">Masehi</div><div class="value">${data.masehi.string}</div></div>
-          <div class="result-item"><div class="label">Nongli (Kongzili)</div><div class="value">${data.nongli ? data.nongli.string : '-'}</div></div>
-          <div class="result-item"><div class="label">Hijriah</div><div class="value">${data.hijriah ? data.hijriah.string : '-'}</div></div>
-          <div class="result-item"><div class="label">Jawa</div><div class="value">${data.jawa ? data.jawa.string : '-'}</div></div>
+          <div class="result-item"><div class="label">Masehi</div><div class="value">${data.masehi}</div></div>
+          <div class="result-item"><div class="label">Nongli (Kongzili)</div><div class="value">${data.nongli}</div></div>
+          <div class="result-item"><div class="label">Hijriah</div><div class="value">${data.hijriah}</div></div>
+          <div class="result-item"><div class="label">Jawa</div><div class="value">${data.jawa}</div></div>
         `;
       }
 
